@@ -1,18 +1,75 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Website Design Case Study: Dine Market
+
+## Mission
+To build a modern e-commerce platform providing a premium shopping experience for high-quality, artisan clothing.
+
+---
+
+## Scope of Work
+- **Custom Website Design and Development**: Focused on a seamless user experience.
+- **Full Product and Order Management**: Tools designed for efficiency and scalability.
+
+---
+
+## Pages Included
+- **Home**: Highlights top products and promotions in an engaging format.  
+- **Product Pages**: Includes detailed product descriptions, size options, and high-quality images.  
+- **Cart & Checkout**: Secure payment processing integrated with **Stripe**.  
+- **Admin Dashboard**: Simplifies product and order management.
+
+---
+
+## Admin Dashboard Features
+1. **Order Management**  
+   - Real-time tracking and status updates for all orders.  
+2. **Product Management**  
+   - Intuitive interface for adding, editing, or removing products.  
+   - Includes image upload and pricing updates.  
+3. **User-Friendly Interface**  
+   - Streamlined tools for inventory and order tracking.
+
+---
+
+## Checkout the Live Website:
+[Dine Market](https://dinemarket-eta.vercel.app/)
+
+---
+
+## Visual Showcase
+
+![Home Page Preview](https://github.com/user-attachments/assets/ba34df1f-0c5d-4d9b-b749-42586b0769a5)  
+*Home page with top product highlights.*
+
+![Product Page Example](https://github.com/user-attachments/assets/ce7a59c6-3b11-4c7a-975a-f3d0dbd30ab2)  
+*Product page showcasing detailed descriptions and size options.*
+
+![Cart & Checkout](https://github.com/user-attachments/assets/ce9ec4c7-4969-44f8-9e36-c1be066704bd)  
+*Seamless checkout experience integrated with Stripe.*
+
+![Admin Dashboard - Order Management](https://github.com/user-attachments/assets/67cda8e6-5719-430a-96b5-049d20417dae)  
+*Real-time order tracking tools.*
+
+![Admin Dashboard - Product Management](https://github.com/user-attachments/assets/ab0fbedc-7dfb-41c1-a873-5c744f833bb2)  
+*Easily manage inventory with image and pricing updates.*
+
+![User-Friendly Dashboard](https://github.com/user-attachments/assets/32701500-d349-478a-a19c-eb8b5fffb508)  
+*Clean and intuitive interface for admins.*
+
+---
+
+## Technical Stack
+This project was built using **Next.js**, leveraging its robust framework for performance and scalability.
+
+---
 
 ## Getting Started
 
-First, run the development server:
+To run the development server:
 
 ```bash
 npm run dev
 # or
-yarn dev
-# or
 pnpm dev
-# or
-bun dev
-```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
