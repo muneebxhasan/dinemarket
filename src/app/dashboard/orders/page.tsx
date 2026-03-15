@@ -2,7 +2,7 @@ import React from "react";
 import OrderList from "./orders";
 const Customers = () => {
   return (
-    <div>
+    <div className="min-h-screen">
       <OrderList />
     </div>
   );

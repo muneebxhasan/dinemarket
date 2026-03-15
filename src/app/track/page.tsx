@@ -83,7 +83,7 @@ const TrackOrder = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto my-10">
+    <div className="max-w-lg mx-auto my-10 min-h-screen">
       <h1 className="text-2xl font-semibold text-center mb-6">
         Track Your Order
       </h1>

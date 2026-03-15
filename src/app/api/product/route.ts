@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import db, { Product, Image } from "@/lib/db";
 import { eq } from "drizzle-orm";
+import { auth } from "@/lib/auth";
+
 export async function POST(req: NextRequest) {
+  let session = await auth();
+  if (!session) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
   try {
     const { name, clothType, gender, price, imageUrls } = await req.json();
     // console.log("Incoming data:", {
@@ -81,6 +87,10 @@ export async function GET(req: NextRequest) {
 }
 
 export async function PUT(req: NextRequest) {
+  let session = await auth();
+  if (!session) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
@@ -160,6 +170,10 @@ export async function PUT(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  let session = await auth();
+  if (!session) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");

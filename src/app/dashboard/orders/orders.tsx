@@ -178,6 +178,7 @@ function OrderList() {
                 <TableCell className="p-3">
                   ${(order.amountTotal / 100).toFixed(2)}
                 </TableCell>
+
                 <TableCell className="p-3">{order.created}</TableCell>
                 <TableCell className="p-3">{order.orderStatus}</TableCell>
                 <TableCell className="p-3">

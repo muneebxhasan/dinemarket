@@ -58,7 +58,7 @@ const Cart = () => {
   }, 0);
 
   return (
-    <div className="container mx-auto p-4 flex flex-col md:flex-row md:space-x-6">
+    <div className="container mx-auto p-4 flex flex-col md:flex-row md:space-x-6 min-h-screen">
       <div className="flex-1 space-y-6">
         {products.length === 0 ? (
           <div className="text-center text-lg font-medium py-20">

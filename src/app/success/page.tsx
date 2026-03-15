@@ -3,155 +3,76 @@
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
-interface OrderData {
-  id: string;
-  amountTotal: number;
-  currency: string;
-  paymentStatus: string;
-  orderStatus: string;
-  customerName: string;
-  customerEmail: string;
-  customerPhone: string;
-  shippingAddress: {
-    address: {
-      line1: string;
-      line2: string | null;
-      city: string;
-      state: string | null;
-      postal_code: string | null;
-      country: string;
-    };
-  };
-  created: string;
-  items: Array<{
-    description: string;
-    quantity: number;
-    itemTotal: number;
-  }>;
-}
-
-const SuccessPageContent = () => {
+function OrderDetails() {
   const searchParams = useSearchParams();
-  const sessionId = searchParams.get("session_id");
-  const [order, setOrder] = useState<OrderData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const session_id = searchParams.get("session_id");
+  const [orderCreated, setOrderCreated] = useState(false);
+  const [orderId, setOrderId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!sessionId) {
-      setError("Session ID not found in URL");
-      setLoading(false);
-      return;
-    }
+    // Retrieve the stored session ID
+    const storedSessionId = sessionStorage.getItem("session_id");
 
-    const fetchOrder = async () => {
+    // If the session_id is new or different, make the POST request
+    if (session_id && session_id !== storedSessionId) {
+      // Call your API to create the order
+      fetch("/api/order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ session_id }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Order created:", data);
+          setOrderCreated(true);
+          setOrderId(data.order.id); // Store the order ID
+          sessionStorage.setItem("orderCreated", "true");
+          sessionStorage.setItem("session_id", session_id); // Store the session_id
+        })
+        .catch((error) => {
+          console.error("Error creating order:", error);
+        });
+    } else if (storedSessionId) {
+      // If the session_id matches the stored one, retrieve the order ID
       const storedOrderId = sessionStorage.getItem("orderId");
-
       if (storedOrderId) {
-        try {
-          const response = await fetch(`/api/order?id=${storedOrderId}`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-
-          if (!response.ok) {
-            throw new Error("Failed to fetch order data");
-          }
-
-          const orderData: OrderData = await response.json();
-          setOrder(orderData);
-        } catch (error: any) {
-          setError(error.message);
-        } finally {
-          setLoading(false);
-        }
+        setOrderId(storedOrderId);
       }
-    };
+    }
+  }, [session_id]);
 
-    fetchOrder();
-  }, [sessionId]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  if (!order) {
-    return <div>No order data found</div>;
-  }
-
-  const {
-    id,
-    amountTotal,
-    currency,
-    customerName,
-    customerEmail,
-    customerPhone,
-    paymentStatus,
-    shippingAddress,
-    created,
-    items,
-  } = order;
-
-  const orderDate = new Date(created).toLocaleString();
+  useEffect(() => {
+    if (orderId) {
+      sessionStorage.setItem("orderId", orderId);
+    }
+  }, [orderId]);
 
   return (
-    <div>
-      <h1>Success</h1>
-      <hr />
-      <h2>Order Details</h2>
-      <p>Order ID: {id}</p>
-      <p>
-        Amount Paid: ${(amountTotal / 100).toFixed(2)} {currency.toUpperCase()}
-      </p>
-      <p>Payment Status: {paymentStatus}</p>
-      <p>Order Date: {orderDate}</p>
-
-      <h3>Items:</h3>
-      <ul>
-        {items.map((item, index) => (
-          <li key={index}>
-            {item.description} - {item.quantity} x $
-            {(item.itemTotal / 100).toFixed(2)} {currency.toUpperCase()}
-          </li>
-        ))}
-      </ul>
-      <hr />
-      <h2>Customer Details</h2>
-      <p>Name: {customerName || "N/A"}</p>
-      <p>Email: {customerEmail || "N/A"}</p>
-      <p>Phone: {customerPhone || "N/A"}</p>
-
-      <h2>Shipping Details</h2>
-      <p>
-        Address: {shippingAddress.address.line1},{" "}
-        {shippingAddress.address.line2
-          ? `${shippingAddress.address.line2}, `
-          : ""}
-        {shippingAddress.address.city},{" "}
-        {shippingAddress.address.state
-          ? `${shippingAddress.address.state}, `
-          : ""}
-        {shippingAddress.address.postal_code
-          ? `${shippingAddress.address.postal_code}, `
-          : ""}
-        {shippingAddress.address.country}
-      </p>
+    <div className="min-h-screen">
+      <div className="max-w-xl mx-auto p-6 bg-white shadow-md rounded-lg mt-10">
+        <h1 className="text-3xl font-bold text-green-600 mb-4">
+          Payment Successful
+        </h1>
+        <p className="text-lg mb-4">
+          Thank you for your purchase! Your order is being processed.
+        </p>
+        <span className="text-lg mb-4">Note your order ID for tracking.</span>
+        {orderId && (
+          <p className="text-lg font-semibold text-gray-700">
+            <strong>Order ID:</strong> {orderId}
+          </p>
+        )}
+      </div>
     </div>
   );
-};
+}
 
-const SuccessPage = () => {
+export default function SuccessPage() {
   return (
-    <Suspense fallback={<div>Loading page...</div>}>
-      <SuccessPageContent />
+    <Suspense fallback={<div className="text-center text-lg">Loading...</div>}>
+      <OrderDetails />
     </Suspense>
   );
-};
-
-export default SuccessPage;
+}

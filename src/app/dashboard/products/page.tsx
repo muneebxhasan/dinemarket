@@ -7,5 +7,9 @@ import {
 } from "@/components/ui/card";
 import ProductList from "./products";
 export default function CustomersPage() {
-  return <ProductList />;
+  return (
+    <div className="min-h-screen">
+      <ProductList />
+    </div>
+  );
 }

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Form } from "@/components/form";
 import { signIn } from "@/lib/auth";
 import { SubmitButton } from "@/components/submit-button";
-
+// import { getServerSideProps } from "@/utils/redirect";
 export default function Login() {
   return (
     <div className="flex h-screen w-screen items-center justify-center bg-gray-50">
@@ -13,25 +13,31 @@ export default function Login() {
             Use your email and password to sign in
           </p>
         </div>
+
         <Form
           action={async (formData: FormData) => {
             "use server";
-            await signIn("credentials", {
-              redirectTo: "/dashboard",
-              email: formData.get("email") as string,
-              password: formData.get("password") as string,
-            });
+            try {
+              await signIn("credentials", {
+                redirectTo: "/dashboard",
+                email: formData.get("email") as string,
+                password: formData.get("password") as string,
+              });
+              // getServerSideProps();
+            } catch (error) {
+              // console.error("Failed to sign in", error);
+            }
           }}
         >
           <SubmitButton>Sign in</SubmitButton>
-          {/* <p className="text-center text-sm text-gray-600">
+        </Form>
+        {/* <p className="text-center text-sm text-gray-600">
             {"Don't have an account? "}
             <Link href="/auth/register" className="font-semibold text-gray-800">
               Sign up
             </Link>
             {" for free."}
           </p> */}
-        </Form>
       </div>
     </div>
   );
